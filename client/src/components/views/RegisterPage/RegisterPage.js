@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {registerUser} from '../../../_actions/user_action';
 import {withRouter} from 'react-router-dom';
+import {Button, Typography  } from 'antd';
+
+const {Title} = Typography ;
 
 function RegisterPage(props) {
     const dispatch = useDispatch();   
@@ -49,6 +52,7 @@ function RegisterPage(props) {
             });
     }
     return (
+        <React.Fragment>
         <div style={{ display: 'flex', justifyContent: "center", alignItems: 'center', width: '100%', height: '100vh'}}>
             <form style={{ display: 'flex', flexDirection: 'column' }}
                 onSubmit={onSubmitHandler}>
@@ -65,11 +69,12 @@ function RegisterPage(props) {
                <input type="Password" value={ConfirmPassword} onChange={onConfirmPasswordHandler}/>
 
                <br />
-               <button>
+               <Button>
                    Sign in
-                </button> 
+                </Button> 
             </form>
         </div>
+        </React.Fragment>
     )
 }
 
