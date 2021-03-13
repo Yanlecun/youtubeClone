@@ -40,7 +40,7 @@ function LoginPage(props) {
 
     return (
         <div style={{ display: 'flex', justifyContent: "center", alignItems: 'center', width: '100%', height: '100vh', flexDirection:'column'}}>
-        <Title level={2}>Log In</Title>
+        <Title level={2}>Sign In</Title>
             <form style={{ display: 'flex', flexDirection: 'column' }}
                 onSubmit={onSubmitHandler}>
                <label>Email</label>

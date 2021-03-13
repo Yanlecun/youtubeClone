@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {registerUser} from '../../../_actions/user_action';
 import {withRouter} from 'react-router-dom';
-import {Button, Typography  } from 'antd';
+import {Button} from 'antd';
 
-const {Title} = Typography ;
 
 function RegisterPage(props) {
     const dispatch = useDispatch();   
@@ -69,7 +68,7 @@ function RegisterPage(props) {
                <input type="Password" value={ConfirmPassword} onChange={onConfirmPasswordHandler}/>
 
                <br />
-               <Button>
+               <Button htmlType="submit">
                    Sign in
                 </Button> 
             </form>

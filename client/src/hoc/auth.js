@@ -17,7 +17,7 @@ export default function (SpecificComponent, option, adminRoute = null) {
         // 로그인 X 상태에서
         if (!res.payload.isAuth) {
           //only login페이지 요청 받았을 때
-          if(option !== false) {
+          if(option) {
             props.history.push("/login");
           }
           // 로그인 O 상태
