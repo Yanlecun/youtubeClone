@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Typography, Button, Form, message, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Dropzone from "react-dropzone";
+import axios from "axios";
 const { TextArea } = Input;
 const { Title } = Typography;
 
@@ -36,6 +37,24 @@ function VideoUploadPage(props) {
   const onCategoryChange = (e) => {
     setCategory(e.currentTarget.value);
   };
+
+  const onDrop = (files) => {
+    let formData = new FormData();
+    const config = {
+      header: {'content-type': 'multipart/form-data'}
+    }
+    // console.log(file)해보면 내가 올린 동영상에 대한 정보가 담겨 있음
+    formData.append("file", files[0]);
+
+    // 파일 보낼 때 헤더에 content-type를 보내줘야 오류가 안 남
+    axios.post('/api/video/uploadfiles', formData, config)
+      .then(res => {
+        if(!res.data.success) {
+          alert('비디오 업로드 실패');
+        }
+        console.log(res.data.success);
+      })
+  }
   return (
     <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
       <div style={{ textAlign: "center", marginBotton: "2rem" }}>
@@ -45,7 +64,8 @@ function VideoUploadPage(props) {
       <Form onSubmit>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {/* Drop zone */}
-          <Dropzone onDrop multiple={false} maxSize={800000000}>
+          {/* multiple은 한 번에 여러개 o/x, maxSize는 최대 크기 */}
+          <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
             {({ getRootProps, getInputProps }) => (
               <div
                 style={{
@@ -98,7 +118,7 @@ function VideoUploadPage(props) {
         </select>
         <br />
         <br />
-        <Button type="primary" size="large" onclick>
+        <Button type="primary" size="large" onClick>
           Submit
         </Button>
       </Form>
