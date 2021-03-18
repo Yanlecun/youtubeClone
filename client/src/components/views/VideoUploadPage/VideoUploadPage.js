@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Typography, Button, Form, message, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { ConsoleSqlOutlined, PlusOutlined } from "@ant-design/icons";
 import Dropzone from "react-dropzone";
 import axios from "axios";
 const { TextArea } = Input;
@@ -23,6 +23,10 @@ function VideoUploadPage(props) {
   const [Private, setPrivate] = useState(0);
   const [Category, setCategory] = useState("Film & Animation");
 
+  const [FilePath, setFilePath] = useState("");
+  const [Duaration, setDuaration] = useState("");
+  const [ThumbnailPath, setThumbnailPath] = useState("");
+
   const onTitleChange = (e) => {
     setVideoTitle(e.currentTarget.value);
   };
@@ -41,20 +45,29 @@ function VideoUploadPage(props) {
   const onDrop = (files) => {
     let formData = new FormData();
     const config = {
-      header: {'content-type': 'multipart/form-data'}
-    }
+      header: { "content-type": "multipart/form-data" },
+    };
     // console.log(file)해보면 내가 올린 동영상에 대한 정보가 담겨 있음
     formData.append("file", files[0]);
-
     // 파일 보낼 때 헤더에 content-type를 보내줘야 오류가 안 남
-    axios.post('/api/video/uploadfiles', formData, config)
-      .then(res => {
-        if(!res.data.success) {
-          alert('비디오 업로드 실패');
+    axios.post("/api/video/uploadfiles", formData, config).then((res) => {
+      if (!res.data.success) {
+        alert("비디오 업로드 실패");
+      }
+      let variable = {
+        url: res.data.url,
+        fileName: res.data.fileName,
+      };
+      //썸네일 얻어오기
+      axios.post("/api/video/thumbnail", variable).then((res) => {
+        if (!res.data.success) {
+          alert("썸네일 생성 실패");
         }
-        console.log(res.data.success);
-      })
-  }
+        setDuaration(res.data.fileDuaration);
+        setThumbnailPath(res.data.url);
+      });
+    });
+  };
   return (
     <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
       <div style={{ textAlign: "center", marginBotton: "2rem" }}>
@@ -84,9 +97,14 @@ function VideoUploadPage(props) {
             )}
           </Dropzone>
           {/* Thumbnail */}
-          <div>
-            <img src alt />
-          </div>
+          {ThumbnailPath && 
+            <div>
+              <img
+                src={`http://localhost:5000/${ThumbnailPath}`}
+                alt="thumbnail"
+              />
+            </div>
+          }
         </div>
 
         <br />
