@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Typography, Button, Form, message, Input } from "antd";
-import { ConsoleSqlOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import Dropzone from "react-dropzone";
 import axios from "axios";
+import { useSelector } from 'react-redux'
+import { withRouter} from 'react-router-dom'
 const { TextArea } = Input;
 const { Title } = Typography;
+
+
 
 const PrivateOptions = [
   { value: 0, label: "Private" },
@@ -18,6 +22,8 @@ const CategoryOptions = [
   { value: 4, label: "Game" },
 ];
 function VideoUploadPage(props) {
+  const user = useSelector(state => state.user);
+
   const [VideoTitle, setVideoTitle] = useState("");
   const [Description, setDescription] = useState("");
   const [Private, setPrivate] = useState(0);
@@ -68,13 +74,39 @@ function VideoUploadPage(props) {
       });
     });
   };
+
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const variables = {
+      // 리덕스에 저장된 유저 데이터를 읽어오기 위해 redux의 useSelector사용
+      // user에 저장 후에 읽어오기
+      writer: user.userData._id,
+      title: VideoTitle,
+      description: Description,
+      parivacy: Private,
+      filePath: FilePath, 
+      category: Category,
+      duration: Duaration,
+      thumbnail: ThumbnailPath,
+    }
+    axios.post('/api/video/uploadvideo', variables)
+      .then(res => {
+        if(!res.data.success) alert('비디오 업로드에 실패')
+        message.success("비디오 업로드 성공!")
+        setTimeout(() => {
+          props.history.push('/')
+        }, 3000)
+      })
+  }
   return (
     <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
       <div style={{ textAlign: "center", marginBotton: "2rem" }}>
         <Title level={2}>Upload Video</Title>
       </div>
 
-      <Form onSubmit>
+      <Form onSubmit={onSubmit}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {/* Drop zone */}
           {/* multiple은 한 번에 여러개 o/x, maxSize는 최대 크기 */}
@@ -136,12 +168,11 @@ function VideoUploadPage(props) {
         </select>
         <br />
         <br />
-        <Button type="primary" size="large" onClick>
+        <Button type="primary" size="large" onClick={onSubmit}>
           Submit
         </Button>
       </Form>
     </div>
   );
 }
-
-export default VideoUploadPage;
+export default withRouter(VideoUploadPage);
