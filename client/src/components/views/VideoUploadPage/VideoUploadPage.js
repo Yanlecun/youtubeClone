@@ -30,7 +30,7 @@ function VideoUploadPage(props) {
   const [Category, setCategory] = useState("Film & Animation");
 
   const [FilePath, setFilePath] = useState("");
-  const [Duaration, setDuaration] = useState("");
+  const [Duration, setDuration] = useState("");
   const [ThumbnailPath, setThumbnailPath] = useState("");
 
   const onTitleChange = (e) => {
@@ -69,7 +69,8 @@ function VideoUploadPage(props) {
         if (!res.data.success) {
           alert("썸네일 생성 실패");
         }
-        setDuaration(res.data.fileDuaration);
+        console.log(res.data.fileDuration);
+        setDuration(res.data.fileDuration);
         setThumbnailPath(res.data.url);
       });
     });
@@ -88,7 +89,7 @@ function VideoUploadPage(props) {
       parivacy: Private,
       filePath: FilePath, 
       category: Category,
-      duration: Duaration,
+      duration: Duration,
       thumbnail: ThumbnailPath,
     }
     axios.post('/api/video/uploadvideo', variables)

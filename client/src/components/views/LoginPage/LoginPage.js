@@ -33,7 +33,7 @@ function LoginPage(props) {
                 //리액트의 페이지 이동 방법
                 props.history.push('/')
             } else {
-                alert('Error');
+                alert(res.payload.message);
             }
         });
     }

@@ -37,6 +37,7 @@ router.post("/uploadfiles", (req, res) => {
       // 동영상 저장주소
       url: res.req.file.path,
       fileName: res.req.file.filename,
+      fukeDuration: res.req.file.duration
     });
   });
 });
@@ -90,5 +91,20 @@ router.post("/uploadvideo", (req, res) => {
     if (err) return res.json({ success: false, err });
     res.status(200).json({ success: true });
   });
+});
+
+router.get("/getVideos", (req, res) => {
+  // 모든 비디오를 DB에서 가져오기 by MongoDB 메소드 find
+  Video.find()
+    // User의 모든 정보를 video스키마에 가져올 수 있도록 하는 메소드
+    // 안 하면 writer의 id만 가져오게 된다.
+    .populate("writer")
+    .exec((err, videos) => {
+      if (err) return res.status(400).send(error);
+      res.status(200).json({
+        success: true,
+        videos,
+      });
+    });
 });
 module.exports = router;
