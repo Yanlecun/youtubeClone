@@ -9,6 +9,7 @@ import LoginPage from './views/LoginPage/LoginPage'
 import RegisterPage from './views/RegisterPage/RegisterPage'
 import Auth from '../hoc/auth'
 import VideoUploadPage from "./views/VideoUploadPage/VideoUploadPage"
+import VideoDetailPage from "./views/VideoDetailPage/VideoDetailPage"
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           {/* 로그인 한 사람만  */}
-          <Route exact path="/video/upload" component={Auth(VideoUploadPage, true)} /> 
+          <Route exact path="/video/upload" component={Auth(VideoUploadPage, true)} />
+          <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, null)} />
         </Switch>
       </div>
     </Router>

@@ -6,9 +6,9 @@ const multer = require("multer");
 var ffmpeg = require("fluent-ffmpeg");
 
 // STORAGE MULTER CONFIG
-let storage = multer.diskStorage({
+var storage = multer.diskStorage({
   //파일을 어디에 저장할지에 대해서 명세
-  desination: (req, file, cb) => {
+  destination: (req, file, cb) => {
     cb(null, "uploads/");
   },
   //파일 이름을 어떻게 저장할지
@@ -22,13 +22,13 @@ let storage = multer.diskStorage({
       return cb(res.status(400).end("only mp4 is allowed"), false);
     }
     cb(null, true);
-  },
+  }
 });
-const upload = multer({ storage: storage }).single("file");
+const upload = multer({ storage }).single("file");
 
 router.post("/uploadfiles", (req, res) => {
   // 비디오 서버에 저장
-  upload(req, res, (err) => {
+  upload(req, res, err => {
     if (err) {
       return res.json({ success: false, err });
     }
@@ -37,7 +37,8 @@ router.post("/uploadfiles", (req, res) => {
       // 동영상 저장주소
       url: res.req.file.path,
       fileName: res.req.file.filename,
-      fukeDuration: res.req.file.duration
+      fukeDuration: res.req.file.duration,
+      filePath: res.req.file.path
     });
   });
 });
@@ -73,7 +74,7 @@ router.post("/thumbnail", (req, res) => {
     //옵션
     .screenshots({
       // 3개
-      count: 3,
+      count: 1,
       // 썸네일 파일 저장 위치
       folder: "uploads/thumbnails",
       // 파일 사이즈
@@ -94,6 +95,7 @@ router.post("/uploadvideo", (req, res) => {
 });
 
 router.get("/getVideos", (req, res) => {
+  console.log("hihi")
   // 모든 비디오를 DB에서 가져오기 by MongoDB 메소드 find
   Video.find()
     // User의 모든 정보를 video스키마에 가져올 수 있도록 하는 메소드
@@ -107,4 +109,21 @@ router.get("/getVideos", (req, res) => {
       });
     });
 });
+
+router.post("/getVideoDetail", (req,res) => {
+    //클라이언트에서 보낸 id를 이용해서 찾기
+    console.log("hihi")
+    Video.findOne({"_id" : req.body.videoId})
+      .populate("writer")
+      .exec((err, video) => {
+        if(err) {
+          res.status(400).send(err)
+        }
+        res.status(200).json({
+          success: true,
+          video
+        })
+      })
+
+})
 module.exports = router;

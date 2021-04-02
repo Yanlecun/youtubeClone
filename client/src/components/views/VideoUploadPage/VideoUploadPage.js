@@ -53,13 +53,15 @@ function VideoUploadPage(props) {
     const config = {
       header: { "content-type": "multipart/form-data" },
     };
-    // console.log(file)해보면 내가 올린 동영상에 대한 정보가 담겨 있음
+    // console.log(files)해보면 내가 올린 동영상에 대한 정보가 담겨 있음
+    console.log(files);
     formData.append("file", files[0]);
     // 파일 보낼 때 헤더에 content-type를 보내줘야 오류가 안 남
     axios.post("/api/video/uploadfiles", formData, config).then((res) => {
       if (!res.data.success) {
         alert("비디오 업로드 실패");
       }
+      setFilePath(res.data.filePath);
       let variable = {
         url: res.data.url,
         fileName: res.data.fileName,
@@ -69,7 +71,7 @@ function VideoUploadPage(props) {
         if (!res.data.success) {
           alert("썸네일 생성 실패");
         }
-        console.log(res.data.fileDuration);
+        
         setDuration(res.data.fileDuration);
         setThumbnailPath(res.data.url);
       });
@@ -90,7 +92,7 @@ function VideoUploadPage(props) {
       filePath: FilePath, 
       category: Category,
       duration: Duration,
-      thumbnail: ThumbnailPath,
+      thumbnail: ThumbnailPath
     }
     axios.post('/api/video/uploadvideo', variables)
       .then(res => {

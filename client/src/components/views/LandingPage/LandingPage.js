@@ -8,7 +8,7 @@ import moment from 'moment';
 const {Title} = Typography;
 const {Meta } = Card;
 
-function LandingPage(props) {
+function LandingPage() {
   const [Videos, setVideos] = useState([]);
   // MongoDB에서 비디오 데이터 갖고 오기
   // 리액트훅 ; DOM이 load되자마자 호출되며, 끝에 ,[]) 꼬랑지 없으면 무한반복함
@@ -62,10 +62,10 @@ function LandingPage(props) {
             Videos.map((video,index) => {
               var minutes = Math.floor(video.duration / 60);  
               var seconds = Math.floor((video.duration - minutes * 60));
-              console.log(video.fileDuration)
+              console.log(video)
 
               return <Col key={index} lg={6} mg={8} xs={24}>
-                <a href={`/video/post/${video._id}`}> 
+                <a href={`/video/${video._id}`}> 
                   <div style={{ position: 'relative'}}>
                     <img style={{width: "100%"}} src={`http://localhost:5000/${video.thumbnail}`} alt=""/>
                     <div className="duration">
