@@ -10,9 +10,7 @@ const {Meta } = Card;
 
 function LandingPage() {
   const [Videos, setVideos] = useState([]);
-  // MongoDB에서 비디오 데이터 갖고 오기
-  // 리액트훅 ; DOM이 load되자마자 호출되며, 끝에 ,[]) 꼬랑지 없으면 무한반복함
-  // 클래스 방식에서는 componenetDidMount = () => {...}
+
   useEffect(() => {
     axios.get('/api/video/getVideos')
     .then(res => {
@@ -78,7 +76,7 @@ function LandingPage() {
                     <Avatar src={video.writer.image}/> 
                 } />
                 <span>{video.writer.name}</span><br/>
-                <span style={{marginLeft: "3rem"}}> {video.views} Views </span> - <span>{moment(video.createdAt).format("MM월 DD일 YY")}</span>
+                <span style={{marginLeft: "3rem"}}> {video.views} Views </span> - <span>{moment(video.createdAt).format("MM월 DD일")}</span>
               </Col>
             })}
           </Row>

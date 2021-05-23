@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Row, Col, Avatar, Card, List} from 'antd'
 import axios from 'axios'
 import {withRouter} from 'react-router-dom'
+import SideVideo from "./Sections/SideVideo"
 
 const {Meta} = Card;
 function VideoDetailPage(props) {
@@ -20,20 +21,23 @@ function VideoDetailPage(props) {
     
     const videoId = props.match.params.videoId;
     const variable = {videoId}
+
     return (
         <div>
             {VideoDetails &&
                 <Row gutter={[16,32]}>
                     <Col lg={18} xs={24}>
                         <div style={{width: "100%", padding:"3rem 4rem"}}>
-                        
-                            <video style={{width: "100%"}} src={`http://localhost:5000/${VideoDetails.filePath}`} controls/>
+                            <video style={{width: "100%", height: "50%"}} src={`http://localhost:5000/${VideoDetails.filePath}`} controls/>
                             <List.Item actions >
                                 <List.Item.Meta
                                     avatar={<Avatar src={VideoDetails.writer && VideoDetails.writer.image} />}
                                     title={VideoDetails.title} description={VideoDetails.description}/>
                             </List.Item>
                         </div>
+                    </Col>
+                    <Col lg={6} xs={24}>
+                        <SideVideo id={variable}/>
                     </Col>
                 </Row>
             }
