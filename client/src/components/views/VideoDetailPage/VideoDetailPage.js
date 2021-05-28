@@ -3,6 +3,7 @@ import {Row, Col, Avatar, Card, List} from 'antd'
 import axios from 'axios'
 import {withRouter} from 'react-router-dom'
 import SideVideo from "./Sections/SideVideo"
+import Subscribe from './Sections/Subscribe'
 
 const {Meta} = Card;
 function VideoDetailPage(props) {
@@ -15,13 +16,11 @@ function VideoDetailPage(props) {
                     alert("비디오 가져오기 실패!")
                 }
                 setVideoDetails(res.data.video);
-                console.log(res.data);
             }) 
     }, [])
-    
     const videoId = props.match.params.videoId;
     const variable = {videoId}
-
+    
     return (
         <div>
             {VideoDetails &&
@@ -29,7 +28,7 @@ function VideoDetailPage(props) {
                     <Col lg={18} xs={24}>
                         <div style={{width: "100%", padding:"3rem 4rem"}}>
                             <video style={{width: "100%", height: "50%"}} src={`http://localhost:5000/${VideoDetails.filePath}`} controls/>
-                            <List.Item actions >
+                            <List.Item actions={[<Subscribe userTo={VideoDetails.writer && VideoDetails.writer._id}/>]} >
                                 <List.Item.Meta
                                     avatar={<Avatar src={VideoDetails.writer && VideoDetails.writer.image} />}
                                     title={VideoDetails.title} description={VideoDetails.description}/>
