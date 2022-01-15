@@ -10,6 +10,9 @@ class LeftMenu extends Component {
         <Menu.Item key="mail">
           <a href="/">Home</a>
         </Menu.Item>
+        <Menu.Item key="subscription">
+          <a href="/subscription">Subscription</a>
+        </Menu.Item>
         {/* <SubMenu title={<span>Blogs</span>}>
           <MenuItemGroup title="Item 1">
             <Menu.Item key="setting:1">Option 1</Menu.Item>

@@ -10,6 +10,7 @@ import RegisterPage from './views/RegisterPage/RegisterPage'
 import Auth from '../hoc/auth'
 import VideoUploadPage from "./views/VideoUploadPage/VideoUploadPage"
 import VideoDetailPage from "./views/VideoDetailPage/VideoDetailPage"
+import SubscriptionPage from "./views/SubscriptionPage/SubscriptionPage"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           {/* 로그인 한 사람만  */}
           <Route exact path="/video/upload" component={Auth(VideoUploadPage, true)} />
           <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, null)} />
+          <Route exact path="/subscription" component={Auth(SubscriptionPage, null)} />
         </Switch>
       </div>
     </Router>

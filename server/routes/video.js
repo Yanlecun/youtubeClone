@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Video } = require("../models/Video.js");
+const { Subscribers } = require("../models/Subscribers");
 
 const multer = require("multer");
 var ffmpeg = require("fluent-ffmpeg");
@@ -22,13 +23,13 @@ var storage = multer.diskStorage({
       return cb(res.status(400).end("only mp4 is allowed"), false);
     }
     cb(null, true);
-  }
+  },
 });
 const upload = multer({ storage }).single("file");
 
 router.post("/uploadfiles", (req, res) => {
   // 비디오 서버에 저장
-  upload(req, res, err => {
+  upload(req, res, (err) => {
     if (err) {
       return res.json({ success: false, err });
     }
@@ -38,7 +39,7 @@ router.post("/uploadfiles", (req, res) => {
       url: res.req.file.path,
       fileName: res.req.file.filename,
       fukeDuration: res.req.file.duration,
-      filePath: res.req.file.path
+      filePath: res.req.file.path,
     });
   });
 });
@@ -95,7 +96,7 @@ router.post("/uploadvideo", (req, res) => {
 });
 
 router.get("/getVideos", (req, res) => {
-  console.log("hihi")
+  console.log("hihi");
   // 모든 비디오를 DB에서 가져오기 by MongoDB 메소드 find
   Video.find()
     // User의 모든 정보를 video스키마에 가져올 수 있도록 하는 메소드
@@ -110,20 +111,44 @@ router.get("/getVideos", (req, res) => {
     });
 });
 
-router.post("/getVideoDetail", (req,res) => {
-    //클라이언트에서 보낸 id를 이용해서 찾기
-    console.log("hihi")
-    Video.findOne({"_id" : req.body.videoId})
-      .populate("writer")
-      .exec((err, video) => {
-        if(err) {
-          res.status(400).send(err)
-        }
-        res.status(200).json({
-          success: true,
-          video
-        })
-      })
+router.post("/getVideoDetail", (req, res) => {
+  //클라이언트에서 보낸 id를 이용해서 찾기
+  console.log("hihi");
+  Video.findOne({ _id: req.body.videoId })
+    .populate("writer")
+    .exec((err, video) => {
+      if (err) {
+        res.status(400).send(err);
+      }
+      res.status(200).json({
+        success: true,
+        video,
+      });
+    });
+});
 
-})
+router.post("/getSubscriptionVideos", (req, res) => {
+  // 자신의 아이디를 가지고 구독하는 사람들을 찾는다.
+  Subscribers.find({ userFrom: req.body.userFrom }) // userFrom의 값을 이용해 DB에서 탐색
+    .exec((err, subscriberInfo) => {
+      if (err) returnres.status(400).send(err);
+
+      let subscribedUser = [];
+
+      subscriberInfo.map((subscriber, i) => {
+        // 찾아온 userFrom의 이름으로 userTo를 가져와 map함수를 이용해 배열에 추가
+        subscribedUser.push(subscriber.userTo);
+      });
+
+      // 찾은 사람들의 비디오를 가지고 온다.
+      Video.find({ writer: { $in: subscribedUser } }) // mongoDB의 이름을 이용해 $in으로 들어와 있는 모든 사람들의 id를 가지고 비디오 찾아오기
+        .populate("writer") // writer의 모든 정보들 가져오기
+        .exec((err, videos) => {
+          if (err) return res.status(400).status(err);
+          res.status(200).json({ success: true, videos });
+        });
+    });
+
+  // 찾은 사람들의 비디오를 가지고 온다.
+});
 module.exports = router;
