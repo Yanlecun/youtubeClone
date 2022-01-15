@@ -26,7 +26,7 @@ function SideVideo(props) {
         {sideVideos && sideVideos.map((video, index) => {
           var minutes = Math.floor(video.duration / 60);
           var seconds = Math.floor(video.duration - minutes * 60);
-          if(video._id == props.id.videoId)  return;
+          if(video._id === props.id.videoId)  return;
           return (
             <div style={{ display: "flex", marginBottom: "1rem", padding: "0 2rem" }}>
               <div style={{ width: "40%", marginRight: "1rem" }}>

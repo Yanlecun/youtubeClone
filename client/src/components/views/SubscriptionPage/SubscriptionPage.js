@@ -68,7 +68,7 @@ function SubscriptionPage() {
           margin: "3rem auto",
         }}
       >
-        <Title level={2}>Recommended</Title>
+        <Title level={2}>Subscribed</Title>
         <hr />
 
         <Row gutter={[32, 16]}>{renderCards}</Row>
