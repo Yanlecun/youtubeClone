@@ -16,6 +16,7 @@ function RegisterPage(props) {
     const onEmilHandler = (event) => {
         setEmail(event.currentTarget.value);
     }
+    
     const onNameHandler = (event) => {
         setName(event.currentTarget.value)
     }

@@ -30,7 +30,7 @@ function SideVideo(props) {
           return (
             <div style={{ display: "flex", marginBottom: "1rem", padding: "0 2rem" }}>
               <div style={{ width: "40%", marginRight: "1rem" }}>
-                <a href>
+                <a href={`/video/${video._id}`}>
                   <img
                       style={{ width: "100%", height: "100%" }}
                       src={`http://localhost:5000/${video.thumbnail}`}
@@ -43,7 +43,7 @@ function SideVideo(props) {
                     <span style={{ fontSize: "1rem", color: "#000" }}>{video.title}</span><br />
                     <span>{video.writer.name}</span><br />
                     <span> {video.views} views</span><br />
-                    <span>{minutes} : {seconds}</span>
+                    <span>0{minutes} : 0{seconds}</span>
                   </a>
               </div>
             </div>

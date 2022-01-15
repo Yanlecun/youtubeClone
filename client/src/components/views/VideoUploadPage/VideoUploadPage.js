@@ -5,6 +5,7 @@ import Dropzone from "react-dropzone";
 import axios from "axios";
 import { useSelector } from 'react-redux'
 import { withRouter} from 'react-router-dom'
+import NavBar from "../NavBar/NavBar";
 const { TextArea } = Input;
 const { Title } = Typography;
 
@@ -104,78 +105,82 @@ function VideoUploadPage(props) {
       })
   }
   return (
-    <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
-      <div style={{ textAlign: "center", marginBotton: "2rem" }}>
-        <Title level={2}>Upload Video</Title>
-      </div>
-
-      <Form onSubmit={onSubmit}>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          {/* Drop zone */}
-          {/* multiple은 한 번에 여러개 o/x, maxSize는 최대 크기 */}
-          <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
-            {({ getRootProps, getInputProps }) => (
-              <div
-                style={{
-                  width: "300px",
-                  height: "240px",
-                  border: "1px solid lightgrey",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                {...getRootProps()}
-              >
-                <input {...getInputProps()} />
-                <PlusOutlined style={{ fontSize: "3rem" }} />
-              </div>
-            )}
-          </Dropzone>
-          {/* Thumbnail */}
-          {ThumbnailPath && 
-            <div>
-              <img
-                src={`http://localhost:5000/${ThumbnailPath}`}
-                alt="thumbnail"
-              />
-            </div>
-          }
+    <React.Fragment>
+      <NavBar/>
+      <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
+        <div style={{ textAlign: "center", marginBotton: "2rem" }}>
+          <Title level={2}>Upload Video</Title>
         </div>
 
-        <br />
-        <br />
-        <label>Title</label>
-        <Input onChange={onTitleChange} value={VideoTitle} />
-        <br />
-        <br />
-        <label>Description</label>
-        <TextArea onChange={onDescriptionChange} value={Description} />
-        <br />
-        <br />
-        <select onChange={onPrivateChange}>
-          {PrivateOptions.map((item, index) => (
-            <option key={index} value={item.value}>
-              {item.label}
-            </option>
-          ))}
-        </select>
-        <br />
-        <br />
-        <select onChange={onCategoryChange}>
-          {/* 익명함수 {}말고 ()쓰는 거 주의 */}
-          {CategoryOptions.map((item, index) => (
-            <option key={index} value={item.label}>
-              {item.label}
-            </option>
-          ))}
-        </select>
-        <br />
-        <br />
-        <Button type="primary" size="large" onClick={onSubmit}>
-          Submit
-        </Button>
-      </Form>
-    </div>
+        <Form onSubmit={onSubmit}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {/* Drop zone */}
+            {/* multiple은 한 번에 여러개 o/x, maxSize는 최대 크기 */}
+            <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
+              {({ getRootProps, getInputProps }) => (
+                <div
+                  style={{
+                    width: "300px",
+                    height: "240px",
+                    border: "1px solid lightgrey",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  {...getRootProps()}
+                >
+                  <input {...getInputProps()} />
+                  <PlusOutlined style={{ fontSize: "3rem" }} />
+                </div>
+              )}
+            </Dropzone>
+            {/* Thumbnail */}
+            {ThumbnailPath && 
+              <div>
+                <img
+                  src={`http://localhost:5000/${ThumbnailPath}`}
+                  alt="thumbnail"
+                />
+              </div>
+            }
+          </div>
+
+          <br />
+          <br />
+          <label>Title</label>
+          <Input onChange={onTitleChange} value={VideoTitle} />
+          <br />
+          <br />
+          <label>Description</label>
+          <TextArea onChange={onDescriptionChange} value={Description} />
+          <br />
+          <br />
+          <select onChange={onPrivateChange}>
+            {PrivateOptions.map((item, index) => (
+              <option key={index} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+          <br />
+          <br />
+          <select onChange={onCategoryChange}>
+            {/* 익명함수 {}말고 ()쓰는 거 주의 */}
+            {CategoryOptions.map((item, index) => (
+              <option key={index} value={item.label}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+          <br />
+          <br />
+          <Button type="primary" size="large" onClick={onSubmit}>
+            Submit
+          </Button>
+        </Form>
+      </div>
+
+    </React.Fragment>
   );
 }
 export default withRouter(VideoUploadPage);

@@ -4,6 +4,7 @@ import axios from 'axios'
 import {withRouter} from 'react-router-dom'
 import SideVideo from "./Sections/SideVideo"
 import Subscribe from './Sections/Subscribe'
+import NavBar from "../NavBar/NavBar";
 
 const {Meta} = Card;
 function VideoDetailPage(props) {
@@ -23,6 +24,7 @@ function VideoDetailPage(props) {
     
     return (
         <div>
+            <NavBar/>
             {VideoDetails &&
                 <Row gutter={[16,32]}>
                     <Col lg={18} xs={24}>

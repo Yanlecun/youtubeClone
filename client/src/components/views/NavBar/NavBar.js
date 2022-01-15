@@ -4,8 +4,8 @@ import RightMenu from "./Sections/RightMenu";
 
 function NavBar() {
   return (
-    <nav className="menuBar">
-      <div className="logo"style={{marginLeft: '5px'}}>
+    <nav className="menuBar" style={{display:'flex'}}>
+      <div className="logo"style={{marginLeft: '5px', display: "flex", alignItems:"center"}}>
         <a href="/">logo</a>
       </div>
       <div
@@ -14,6 +14,7 @@ function NavBar() {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          flexGrow: '1'
         }}
       >
         <div className="leftMenu">
