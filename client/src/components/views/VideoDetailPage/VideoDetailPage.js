@@ -4,6 +4,7 @@ import axios from "axios";
 import { withRouter } from "react-router-dom";
 import SideVideo from "./Sections/SideVideo";
 import Subscribe from "./Sections/Subscribe";
+import Comment from "./Sections/Comment";
 import NavBar from "../NavBar/NavBar";
 
 const { Meta } = Card;
@@ -23,10 +24,10 @@ function VideoDetailPage(props) {
   const variable = { videoId };
 
   if (VideoDetails.writer) {
-    const subscribeButton = VideoDetails.writer._id !== localStorage.getItem("userId")
-       && (
+    const subscribeButton = VideoDetails.writer._id !==
+      localStorage.getItem("userId") && (
       <Subscribe userTo={VideoDetails.writer._id} />
-      );
+    );
     return (
       <div>
         <NavBar />
@@ -50,6 +51,9 @@ function VideoDetailPage(props) {
                   description={VideoDetails.description}
                 />
               </List.Item>
+
+              {/* Comment */}
+              <Comment postId = {videoId} />
             </div>
           </Col>
           <Col lg={6} xs={24}>
