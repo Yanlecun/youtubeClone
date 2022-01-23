@@ -7,10 +7,13 @@ import Subscribe from "./Sections/Subscribe";
 import Comment from "./Sections/Comment";
 import NavBar from "../NavBar/NavBar";
 
+
 const { Meta } = Card;
 
 function VideoDetailPage(props) {
   const [VideoDetails, setVideoDetails] = useState([null]);
+  const [CommentList, setCommentList] = useState([]);
+
   // App.js에서 라우팅에 videoId를 이용해서 쉽게 읽어올 수 있음
   useEffect(() => {
     axios.post("/api/video/getVideoDetail", variable).then((res) => {
@@ -19,9 +22,25 @@ function VideoDetailPage(props) {
       }
       setVideoDetails(res.data.video);
     });
+
+
+    axios.post('/api/comment/getComments', variable)
+      .then(res => {
+
+        if(res.data.success) {
+          setCommentList(res.data.comments)
+        } else {
+          alert('코멘트 정보를 가져오는 것을 실패하였음')
+        }
+      })
   }, []);
+  
   const videoId = props.match.params.videoId;
-  const variable = { videoId };
+  const variable = { videoId};
+  const refreshComment = (newComment) => {
+    setCommentList(CommentList.concat(newComment))
+  }
+
 
   if (VideoDetails.writer) {
     const subscribeButton = VideoDetails.writer._id !==
@@ -53,7 +72,7 @@ function VideoDetailPage(props) {
               </List.Item>
 
               {/* Comment */}
-              <Comment postId = {videoId} />
+              <Comment commentList={CommentList} refreshComment={refreshComment} postId = {videoId} />
             </div>
           </Col>
           <Col lg={6} xs={24}>

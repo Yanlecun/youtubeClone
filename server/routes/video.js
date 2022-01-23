@@ -113,7 +113,6 @@ router.get("/getVideos", (req, res) => {
 
 router.post("/getVideoDetail", (req, res) => {
   //클라이언트에서 보낸 id를 이용해서 찾기
-  console.log("hihi");
   Video.findOne({ _id: req.body.videoId })
     .populate("writer")
     .exec((err, video) => {

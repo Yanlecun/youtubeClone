@@ -18,22 +18,28 @@ function Comment(props) {
         const variables = {
             content: commentValue,
             writer: user.userData._id, // REDUX사용
-            postId: videoId
+            videoId
         }
-        axios.post('api/comment/saveComment', variables)
+        axios.post('/api/comment/saveComment', variables)
         .then(response => {
+
             if(!response.data.success) {
                 alert('댓글을 저장하지 못했습니다.');
             }
+            setcommentValue("")
+            props.refreshComment(response.data.result)
         })
     };
     return (
         <div>
             <br />
-            <p> replise</p>
+            <p> 답글</p>
             <hr />
-            <SingleComment />
-
+            {props.commentList && props.commentList.map((comment,index) => {
+                (!comment.responseTo &&
+                <SingleComment comment={comment} postId={props.postId} refreshComment={props.refreshComment} />
+                )
+            })}
             <form style={{display: 'flex'}} onsubmit >
                 <textarea
                     style={{width: '100%', borderRadius: '5px'}}
